@@ -5,4 +5,5 @@ export interface CompanyList {
     company_name? : string
     created_at ?: Timestamp
     id?: string
+    deadline?:Timestamp
 }
