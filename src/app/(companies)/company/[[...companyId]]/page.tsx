@@ -1,12 +1,24 @@
 import RecruitFlow from '@/components/RecruitFlow'
 import TodoList from '@/components/TodoList'
 import React from 'react'
+import { getCompanyData } from '../../../../../firebase/firebaseFunction';
+import { CompanyList } from '@/app/Types';
 
-const page = () => {
+const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
+    const { companyId } = await params;
+    const companyData = await getCompanyData({ companyId })
+    
     return (
         <div className=''>
-            <RecruitFlow/>
-            <TodoList/>
+            {companyData.map((data:CompanyList) => (
+                <div key={data.id}>
+                    <RecruitFlow />
+                    <TodoList
+                        companyId={data.id}
+                    />
+                </div>
+            ))}
+
         </div>
     )
 }

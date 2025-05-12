@@ -1,7 +1,5 @@
 import EntriedCompanyList from "@/components/EntriedCompanyList";
 
-
-
 export default function Home() {
   return (
     <div className="max-container  ">

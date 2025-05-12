@@ -4,6 +4,14 @@ export interface CompanyList {
     company_id? : string
     company_name? : string
     created_at ?: Timestamp
-    id?: string
+    id: string
     deadline?:Timestamp
+}
+
+export interface TodoListData {
+    todo_id? : string
+    todo_action? : string
+    deadline? :Timestamp
+    created_at? : Timestamp
+    completed? : boolean
 }
