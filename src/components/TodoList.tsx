@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import TodoForm from './TodoForm'
-import { Button } from './ui/button'
 import { getTodoListData } from '../../firebase/firebaseFunction'
 import { TodoListData } from '@/app/Types'
 import {
@@ -15,12 +14,12 @@ import {
 } from "@/components/ui/table"
 
 
-const TodoList = ({ companyId }: { companyId: string }) => {
+const TodoList = ({ Id  }: { Id: string ;}) => {
     const [todoListData, setTodoListData] = useState<TodoListData[]>()
 
     useEffect(() => {
         const getTodoList = async () => {
-            const todoData = await getTodoListData({ companyId })
+            const todoData = await getTodoListData({ Id })
             setTodoListData(todoData)
         }
         getTodoList()

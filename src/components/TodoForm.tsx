@@ -39,6 +39,8 @@ import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from './ui/calendar'
+import { addTodoFormData } from '../../firebase/firebaseFunction'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
     action_name: z.string().min(1),
@@ -47,20 +49,28 @@ const formSchema = z.object({
 })
 
 const TodoForm = () => {
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            action_name: "",
+        }
 
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("Input Values:", values)
+        const { action_name, completed, deadline } = values;
+        addTodoFormData({ action_name, completed, deadline })
+        //router.refresh()
+        window.location.reload()
+        //console.log("Input Values:", values)
     }
 
     return (
         <div className='w-full flexEnd border-b-4 border-gray-400'>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant='link' className='hover:cursor-pointer '>Add Todo</Button>
+                    <Button variant='link'  className='hover:cursor-pointer '>Add Todo</Button>
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>

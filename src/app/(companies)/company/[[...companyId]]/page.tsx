@@ -14,7 +14,7 @@ const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
                 <div key={data.id}>
                     <RecruitFlow />
                     <TodoList
-                        companyId={data.id}
+                        Id={data.id}
                     />
                 </div>
             ))}
