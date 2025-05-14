@@ -1,4 +1,4 @@
-import { Timestamp, collection, doc, getDocs, query, setDoc, where } from "firebase/firestore"
+import { Timestamp, collection, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebase"
 import { v4 } from "uuid";
 
@@ -41,10 +41,22 @@ export const addTodoFormData = async ({ action_name, completed, deadline }: { ac
     try {
         const todoId = v4();
         await setDoc(doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt',"todoList",`${todoId}`), {
-            todo_title: action_name,
+            todo_action: action_name,
+            todo_id : todoId,
             completed: completed,
             deadline: deadline,
             created_at: new Date(),
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const addRecruitFlow = async (recruitFlowData : any) => {
+    try {
+        const recruitFlowRef = doc(db,'company','dU8hCMB6IGXAUGPsF6Qt','recruitFlow','xXtTCh1nMKWE3QYVhmuM')
+        await updateDoc(recruitFlowRef,{
+            selectionFlow : recruitFlowData
         })
     } catch (error) {
         console.error(error)

@@ -40,7 +40,7 @@ import { cn } from '@/lib/utils'
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from './ui/calendar'
 import { addTodoFormData } from '../../firebase/firebaseFunction'
-import { useRouter } from 'next/navigation'
+
 
 const formSchema = z.object({
     action_name: z.string().min(1),
@@ -49,7 +49,7 @@ const formSchema = z.object({
 })
 
 const TodoForm = () => {
-    const router = useRouter();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -60,8 +60,8 @@ const TodoForm = () => {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         const { action_name, completed, deadline } = values;
+
         addTodoFormData({ action_name, completed, deadline })
-        //router.refresh()
         window.location.reload()
         //console.log("Input Values:", values)
     }

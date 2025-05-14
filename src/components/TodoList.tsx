@@ -43,7 +43,7 @@ const TodoList = ({ Id  }: { Id: string ;}) => {
                     {todoListData?.map((todo) => (
                         <TableRow key={todo.todo_id}>
                             <TableCell className="font-medium">{todo.todo_action}</TableCell>
-                            <TableCell>{todo.completed ? '完成':'未完成'}</TableCell>
+                            <TableCell>{String(todo.completed) == 'true' ? '完成':'未完成'}</TableCell>
                             <TableCell>{todo.deadline?.toDate().toLocaleDateString()}</TableCell>
                             <TableCell className="text-right">{todo.created_at?.toDate().toLocaleDateString()}</TableCell>
                         </TableRow>
