@@ -4,12 +4,14 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import React from 'react'
 
 const BackButton = () => {
-    const router = useRouter()
+  const router = useRouter()
   return (
-    <button onClick={() => router.back()} className='flex w-full left-0  hover:underline hover:cursor-pointer'>
-        <ArrowBackIosNewIcon/>
+    <div>
+      <div onClick={() => router.back()} className='hover:underline hover:cursor-pointer' >
+        <ArrowBackIosNewIcon className='scale-75'/>
         Back
-    </button>
+      </div>
+    </div>
   )
 }
 

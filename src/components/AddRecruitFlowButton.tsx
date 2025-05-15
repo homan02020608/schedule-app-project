@@ -63,15 +63,12 @@ const AddRecruitFlowButton : React.FC<RecruitFlowData> = ( {recruitFlowData} ) =
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const { selection_name, completed } = values;
         let testing = [...testingData, { ...values }]
         addRecruitFlow(testing)
         window.location.reload()
     }
-
-    console.log(recruitFlowData)
     return (
-        <div>
+        <div className=' '>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant='link' className='hover:cursor-pointer '>Add Process</Button>
@@ -108,7 +105,7 @@ const AddRecruitFlowButton : React.FC<RecruitFlowData> = ( {recruitFlowData} ) =
                                     <FormItem>
                                         <FormLabel>選考状況</FormLabel>
                                         <FormControl>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <Select onValueChange={field.onChange} >
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Select " />
                                                 </SelectTrigger>
