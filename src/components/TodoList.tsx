@@ -12,10 +12,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { useAppSelector } from '@/redux/store'
 
 
 const TodoList = ({ Id  }: { Id: string ;}) => {
     const [todoListData, setTodoListData] = useState<TodoListData[]>()
+    const userInfo = useAppSelector((state) => state.user.user) 
 
     useEffect(() => {
         const getTodoList = async () => {
@@ -24,7 +26,7 @@ const TodoList = ({ Id  }: { Id: string ;}) => {
         }
         getTodoList()
     }, [])
-
+    console.log(userInfo)
     return (
         <div className='p-2 m-4 border-4 flexCenter flex-col'>
             <h1 className='font-light text-3xl '>選考Todo項目一覧</h1>
