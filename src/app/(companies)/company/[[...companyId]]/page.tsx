@@ -3,11 +3,13 @@ import TodoList from '@/components/TodoList'
 import React from 'react'
 import { getCompanyData, getTodoListData } from '../../../../../firebase/firebaseFunction';
 import { CompanyList } from '@/app/Types';
+import { auth } from '@clerk/nextjs/server';
 
 const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
     const { companyId } = await params;
-    const companyData = await getCompanyData({ companyId })
-    //const todoListData = await getTodoListData()
+    const { userId } = await auth()
+    const companyData = await getCompanyData({userId, companyId  })
+    
 
     return (
         <div className=''>
@@ -15,7 +17,8 @@ const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
             {companyData.map((data: CompanyList) => (
                 <div key={data.id}>
                     <TodoList
-                        Id={data.id}
+                        userId={userId}
+                        company_docId={data.id}
                     />
                 </div>
             ))}

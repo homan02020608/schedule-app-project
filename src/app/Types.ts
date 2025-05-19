@@ -7,6 +7,13 @@ export interface CompanyList {
     id: string
     deadline?:Timestamp
 }
+export interface CompanyCard {
+    company_id? : string
+    company_name? : string
+    created_at ?: Date
+    id: string
+    deadline?:Date
+}
 
 export interface TodoListData {
     todo_id? : string

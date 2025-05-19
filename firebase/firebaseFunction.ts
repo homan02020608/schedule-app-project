@@ -2,21 +2,8 @@ import { Timestamp, collection, doc, getDocs, query, setDoc, updateDoc, where } 
 import { db } from "./firebase"
 import { v4 } from "uuid";
 
-
-export const getTodoListData = async ({ Id }: { Id: string }) => {
-    try {
-        const todoListSnapshot = await getDocs(collection(db, 'company', `${Id}`, 'todoList'));
-        const todoListData = todoListSnapshot.docs.map((doc) => ({
-            ...doc.data()
-        }))
-        return todoListData;
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-export const getCompanyData = async ({ companyId }: { companyId: string }) => {
-    const companyDataQuery = query(collection(db, 'company'), where('company_id', '==', `${companyId}`))
+export const getCompanyData = async ({ userId, companyId }: { userId: string | null, companyId: string }) => {
+    const companyDataQuery = query(collection(db, 'users', `${userId}`, 'company'), where('company_id', '==', `${companyId}`))
     const companyDataQuerySnapshot = await getDocs(companyDataQuery);
     const companyData = companyDataQuerySnapshot.docs.map((doc) => ({
         ...doc.data(), id: doc.id
@@ -24,25 +11,29 @@ export const getCompanyData = async ({ companyId }: { companyId: string }) => {
     return companyData;
 }
 
-export const fetchCompanyListData = async () => {
-    try {
-        const companySnapshot = await getDocs((collection(db, "company")))
-        const companyListInfo = companySnapshot.docs.map((doc) => ({
-            ...doc.data(), id: doc.id
-        }))
-        return companyListInfo;
-    } catch (error) {
-        console.error(error)
-    }
+export const fetchCompanyListData = async (userId: string | null) => {
+    const companySnapshot = await getDocs((collection(db, "users", `${userId}`, "company")))
+    const companyListInfo = companySnapshot.docs.map((doc) => ({
+        ...doc.data(), id: doc.id
+    }))
+    return companyListInfo;
 }
 
+export const getTodoListData = async ({ userId, company_docId }: { userId: string | any; company_docId: string }) => {
+    const todoListSnapshot = await getDocs(collection(db, 'users', `${userId}`, 'company', `${company_docId}`, 'todoList'));
+    const todoListData = todoListSnapshot.docs.map((doc) => ({
+        ...doc.data()
+    }))
+    return todoListData;
+
+}
 
 export const addTodoFormData = async ({ action_name, completed, deadline }: { action_name: string; completed: string; deadline: Date }) => {
     try {
         const todoId = v4();
-        await setDoc(doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt',"todoList",`${todoId}`), {
+        await setDoc(doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', "todoList", `${todoId}`), {
             todo_action: action_name,
-            todo_id : todoId,
+            todo_id: todoId,
             completed: completed,
             deadline: deadline,
             created_at: new Date(),
@@ -52,11 +43,11 @@ export const addTodoFormData = async ({ action_name, completed, deadline }: { ac
     }
 }
 
-export const addRecruitFlow = async (recruitFlowData : any) => {
+export const addRecruitFlow = async (recruitFlowData: any) => {
     try {
-        const recruitFlowRef = doc(db,'company','dU8hCMB6IGXAUGPsF6Qt','recruitFlow','xXtTCh1nMKWE3QYVhmuM')
-        await updateDoc(recruitFlowRef,{
-            selectionFlow : recruitFlowData
+        const recruitFlowRef = doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', 'recruitFlow', 'xXtTCh1nMKWE3QYVhmuM')
+        await updateDoc(recruitFlowRef, {
+            selectionFlow: recruitFlowData
         })
     } catch (error) {
         console.error(error)

@@ -28,8 +28,6 @@ interface RecruitFlow {
     selectionFlow?: SelectionFlow | any
 }
 
-const colorVarients = {}
-
 const RecruitFlow = async () => {
     const recruitFlowSnapShot = await getDocs(collection(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', 'recruitFlow'))
     const recruitFlowData = recruitFlowSnapShot.docs.map((doc) => ({
