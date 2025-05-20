@@ -1,24 +1,32 @@
 import { Timestamp } from "firebase/firestore"
 
 export interface CompanyList {
-    company_id? : string
-    company_name? : string
-    created_at ?: Timestamp
+    company_id?: string
+    company_name?: string
+    created_at?: Timestamp
     id: string
-    deadline?:Timestamp
+    deadline?: Timestamp
 }
 export interface CompanyCard {
-    company_id? : string
-    company_name? : string
-    created_at ?: Date
+    company_id?: string
+    company_name?: string
+    created_at?: Date
     id: string
-    deadline?:Date
+    deadline?: Date
 }
 
 export interface TodoListData {
-    todo_id? : string
-    todo_action? : string
-    deadline? :Timestamp
-    created_at? : Timestamp
-    completed? : boolean
+    todo_id?: string
+    todo_action?: string
+    deadline?: Timestamp
+    created_at?: Timestamp
+    completed?: boolean
+}
+
+export interface AddTodoFormData {
+    action_name: string;
+    completed: string;
+    deadline: Date;
+    userId: string | undefined;
+    company_docId: string
 }

@@ -1,6 +1,7 @@
 import { Timestamp, collection, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebase"
 import { v4 } from "uuid";
+import { AddTodoFormData } from "@/app/Types";
 
 export const getCompanyData = async ({ userId, companyId }: { userId: string | null, companyId: string }) => {
     const companyDataQuery = query(collection(db, 'users', `${userId}`, 'company'), where('company_id', '==', `${companyId}`))
@@ -28,10 +29,10 @@ export const getTodoListData = async ({ userId, company_docId }: { userId: strin
 
 }
 
-export const addTodoFormData = async ({ action_name, completed, deadline }: { action_name: string; completed: string; deadline: Date }) => {
+export const addTodoFormData = async ({ action_name, completed, deadline , userId , company_docId}: AddTodoFormData) => {
     try {
         const todoId = v4();
-        await setDoc(doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', "todoList", `${todoId}`), {
+        await setDoc(doc(db,'users', `${userId}`,'company',`${company_docId}`, "todoList", `${todoId}`), {
             todo_action: action_name,
             todo_id: todoId,
             completed: completed,
