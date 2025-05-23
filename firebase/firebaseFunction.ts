@@ -1,4 +1,4 @@
-import { Timestamp, collection, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
+import { Timestamp, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebase"
 import { v4 } from "uuid";
 import { AddTodoFormData } from "@/app/Types";
@@ -29,10 +29,10 @@ export const getTodoListData = async ({ userId, company_docId }: { userId: strin
 
 }
 
-export const addTodoFormData = async ({ action_name, completed, deadline , userId , company_docId}: AddTodoFormData) => {
+export const addTodoFormData = async ({ action_name, completed, deadline, userId, company_docId }: AddTodoFormData) => {
     try {
         const todoId = v4();
-        await setDoc(doc(db,'users', `${userId}`,'company',`${company_docId}`, "todoList", `${todoId}`), {
+        await setDoc(doc(db, 'users', `${userId}`, 'company', `${company_docId}`, "todoList", `${todoId}`), {
             todo_action: action_name,
             todo_id: todoId,
             completed: completed,
@@ -54,3 +54,12 @@ export const addRecruitFlow = async (recruitFlowData: any) => {
         console.error(error)
     }
 }
+//userId: string | any, company_docId: string, todo_id: string | undefined
+
+export const deleteTodoItem = async ({userId, company_docId, todo_id} : any) => {
+    try {
+        await deleteDoc(doc(db, "users", `${userId}`, "company", `${company_docId}`, "todoLisßt", `${company_docId}`))
+    } catch (error) {
+        console.error(error)
+    }
+}   

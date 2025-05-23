@@ -67,7 +67,7 @@ const TodoForm = ({ company_docId } : { company_docId: string }) => {
         window.location.reload()
         //console.log("Input Values:", values)
     }
-    console.log(user?.id)
+
     return (
         <div className='w-full flexEnd border-b-4 border-gray-400'>
             <Sheet>
