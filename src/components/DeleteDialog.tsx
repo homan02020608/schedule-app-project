@@ -1,13 +1,5 @@
 "use client"
 import React from 'react'
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
 
 import {
     AlertDialog,
@@ -27,7 +19,7 @@ import { Button } from './ui/button'
 const DeleteDialog = ({ children , onClick }: { children: React.ReactNode , onClick: React.ComponentProps<"button">["onClick"]}) => {
     return (
         <AlertDialog>
-            <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+            <AlertDialogTrigger>{children}</AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

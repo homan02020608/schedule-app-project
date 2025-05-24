@@ -46,10 +46,10 @@ import { useAppSelector } from '@/redux/store'
 const formSchema = z.object({
     action_name: z.string().min(1),
     completed: z.string(),
-    deadline: z.date()
+    deadline: z.date(),
 })
 
-const TodoForm = ({ company_docId } : { company_docId: string }) => {
+const TodoForm = ({ company_docId }: { company_docId: string }) => {
     const user = useAppSelector((state) => state.user.user)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -60,10 +60,10 @@ const TodoForm = ({ company_docId } : { company_docId: string }) => {
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const { action_name, completed, deadline } = values;
+        const { action_name, completed , deadline} = values;
         const userId = user?.id
-
-        addTodoFormData({ action_name, completed, deadline , userId ,company_docId })
+        console.log(action_name, completed ,deadline)
+        addTodoFormData({ action_name, completed, deadline, userId, company_docId })
         window.location.reload()
         //console.log("Input Values:", values)
     }
@@ -123,12 +123,12 @@ const TodoForm = ({ company_docId } : { company_docId: string }) => {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
+                                                    <FormField
                                 control={form.control}
-                                name='deadline'
+                                name="deadline"
                                 render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Date of deadline</FormLabel>
+                                    <FormItem className="flex flex-col">
+                                        <FormLabel>Date of birth</FormLabel>
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <FormControl>
@@ -140,7 +140,7 @@ const TodoForm = ({ company_docId } : { company_docId: string }) => {
                                                         )}
                                                     >
                                                         {field.value ? (
-                                                            format(field.value, 'PPP')
+                                                            format(field.value, "PPP")
                                                         ) : (
                                                             <span>Pick a date</span>
                                                         )}
@@ -148,25 +148,26 @@ const TodoForm = ({ company_docId } : { company_docId: string }) => {
                                                     </Button>
                                                 </FormControl>
                                             </PopoverTrigger>
-                                            <PopoverContent className='w-auto p-0' align='start'>
+                                            <PopoverContent className="w-auto p-0 index" align="start">
                                                 <Calendar
-                                                    mode='single'
-                                                    selected={field.value}
+                                                    mode="single"
+                                                    selected={field.value ? new Date(field.value) : undefined}
+                                                    //onDayClick={field.onChange}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < new Date()
+                                                        date < new Date() 
                                                     }
                                                     initialFocus
                                                 />
                                             </PopoverContent>
                                         </Popover>
                                         <FormDescription>
-                                            Please Select
+                                            Your date of birth is used to calculate your age.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
+                            /> 
                             <Button type='submit'>Submit</Button>
                         </form>
                     </Form>

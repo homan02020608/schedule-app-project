@@ -12,15 +12,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useAppSelector } from '@/redux/store'
+
 import DeleteDialog from './DeleteDialog'
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
+
+
 const TodoList = ({ userId, company_docId }: { userId: String | null; company_docId: string; }) => {
     const [todoListData, setTodoListData] = useState<TodoListData[]>()
-    //const userInfo = useAppSelector((state) => state.user.user)
-
+    
     useEffect(() => {
         const getTodoList = async () => {
             const todoData = await getTodoListData({ userId, company_docId })
@@ -30,8 +31,8 @@ const TodoList = ({ userId, company_docId }: { userId: String | null; company_do
     }, [])
 
     const deleteTodo = (userId: string | any, company_docId: string, todo_id: string | undefined) => {
-        deleteTodoItem({userId, company_docId, todo_id})
-        window.location.reload
+        deleteTodoItem({ userId, company_docId, todo_id })
+        window.location.reload()
     }
 
     return (
@@ -60,7 +61,7 @@ const TodoList = ({ userId, company_docId }: { userId: String | null; company_do
                             <TableCell>
                                 <DeleteDialog
                                     onClick={() => deleteTodo(userId, company_docId, todo.todo_id)}
-                                >primitive
+                                >
                                     <DeleteIcon />
                                 </DeleteDialog>
                             </TableCell>

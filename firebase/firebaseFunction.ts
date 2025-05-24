@@ -56,9 +56,9 @@ export const addRecruitFlow = async (recruitFlowData: any) => {
 }
 //userId: string | any, company_docId: string, todo_id: string | undefined
 
-export const deleteTodoItem = async ({userId, company_docId, todo_id} : any) => {
+export const deleteTodoItem = async ({ userId, company_docId, todo_id }: any) => {
     try {
-        await deleteDoc(doc(db, "users", `${userId}`, "company", `${company_docId}`, "todoLisßt", `${company_docId}`))
+        await deleteDoc(doc(db, "users", `${userId}`, "company", `${company_docId}`, "todoList", `${todo_id}`))
     } catch (error) {
         console.error(error)
     }

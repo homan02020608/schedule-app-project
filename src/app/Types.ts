@@ -26,7 +26,7 @@ export interface TodoListData {
 export interface AddTodoFormData {
     action_name: string;
     completed: string;
-    deadline: Date;
+    deadline?: Date;
     userId: string | undefined;
     company_docId: string
 }
