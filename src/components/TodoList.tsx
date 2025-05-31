@@ -15,6 +15,7 @@ import {
 
 import DeleteDialog from './DeleteDialog'
 import DeleteIcon from '@mui/icons-material/Delete';
+import Link from 'next/link'
 
 
 
@@ -37,6 +38,11 @@ const TodoList = ({ userId, company_docId }: { userId: String | null; company_do
 
     return (
         <div className='p-2 m-4 border-4 flexCenter flex-col'>
+            <div className='bg-red-100 w-full'>
+                <Link href={`https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID}&redirect_uri=${process.env.NEXT_PUBLIC_SITE_URL}&state=12345abcde&scope=profile%20openid&nonce=09876xyz`}>
+                    LINEログイン
+                </Link>
+            </div>
             <h1 className='font-light text-3xl '>選考項目一覧</h1>
             <TodoForm
                 company_docId={company_docId}
