@@ -1,39 +1,54 @@
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function POST(request: Request) {
-    const req = await request.json();
-    console.log(req);
-    try {
-        const LINE_ACCESS_TOKEN = process.env.NEXT_PUBLIC_LINE_CHANNEL_ACCESS_TOKEN;
-        const LINE_API_PATH = "https://api.line.me/v2/bot/message/broadcast";
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { code, state, error, error_description, } = req.query;
 
-        const requestHeader = {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${LINE_ACCESS_TOKEN}`
-        }
-        const requestBody = await JSON.stringify({
-            messages: [
-                {
-                    type: 'text',
-                    text: "締め切り",
-                },
-            ],
-        });
-        const response = await fetch(LINE_API_PATH, {
-            method: "POST",
-            headers: requestHeader,
-            body: requestBody,
-        });
+    if (error) {
+        console.error(`LINE Login Error (callback):`, error, error_description);
+        return res.redirect(`/settings?lineError=true`);
+    };
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`APIエラー:${errorData}`);
-        }
-
-        return new Response(JSON.stringify({ success: true }), { status: 200 })
-    } catch (e: unknown) {
-        const errorMessage = e instanceof Error ? e.message : "よくわからないエラー"
-        return new Response(
-            JSON.stringify({success : false ,error : errorMessage}), {status : 500}
-        )
+    const [clerkUserIdFromState, randomStringFromState] = String(state).split("-");
+    if(!clerkUserIdFromState){
+        console.error('State parameter is invalid or missing Clerk User Id');
+        return res.redirect('/settings?lineError=true&reason=invalid_state');
     }
-}
+
+    try {
+        const tokenResponse = await fetch('https://api.line.me/oauth2/v2.1/token',{
+            method : 'POST',
+            headers : {'Content-Type': 'application/x-www-form-urlencoded'},
+            body : new URLSearchParams({
+                grant_type : 'authorization_code',
+                code : `${code}`,
+                redirect_uri : `${process.env.NEXT_PUBLIC_SITE_URL}/api/line-test`
+            }),
+        });
+        const tokenData = await tokenResponse.json();
+
+        if(tokenData.error) {
+            console.error(`LINE Token Exchange Error:`,tokenData);
+            return res.redirect(`/settings?lineError=true&reason=${tokenData.error}`)
+        }
+
+        const idToken = tokenData.id_token;
+        const accessToken = tokenData.access_token;
+
+        const verifyResponse = await fetch('https://api.line.me/oauth2/v2.1/verify',{
+            method : 'POST',
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded'},
+            body : new URLSearchParams({
+                id_token : idToken,
+                client_id : `${process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID}`,
+            })
+        });
+        const profileData = await verifyResponse.json();
+
+        if(profileData.error || profileData.aud !== process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID){
+            console.error('LINE ID Token Verification Error:',profileData);
+            return res.redirect('/settings?lineError=true&reason=id_token_verification_failed')
+        }
+    } catch (error) {
+        
+    }
+}  

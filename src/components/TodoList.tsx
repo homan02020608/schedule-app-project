@@ -38,7 +38,7 @@ const TodoList = ({ userId, company_docId }: { userId: String | null; company_do
 
     return (
         <div className='p-2 m-4 border-4 flexCenter flex-col'>
-            <div className='bg-red-100 w-full'>
+            <div className='bg-gray-200 w-full'>
                 <Link href={`https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID}&redirect_uri=${process.env.NEXT_PUBLIC_SITE_URL}&state=12345abcde&scope=profile%20openid&nonce=09876xyz`}>
                     LINEログイン
                 </Link>
