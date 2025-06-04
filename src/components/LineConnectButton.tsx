@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db } from '../../firebase/firebase';
 import { Button } from './ui/button';
+import Link from 'next/link';
 
 const LineConnectButton = () => {
     const { isLoaded, isSignedIn, user } = useUser();
@@ -43,16 +44,17 @@ const LineConnectButton = () => {
         const state = `${user.id}-${generateRandomString(16)}`;
         localStorage.setItem(`line_auth_state_${user.id}`, state);
 
-        const lineLoginUrl = `https://access.line.me/oauth2/v2.1/authorize?`;
+        const lineLoginUrl = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID}&redirect_uri=${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/line-callback&state=${state}&scope=profile%20openid&nonce=${generateRandomString(16)}`;
         const params = new URLSearchParams({
             response_type: 'code',
             client_id: `${process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID}`,
-            redirect_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/line-test`,
+            redirect_uri: `${process.env.NEXT_PUBLIC_SITE_URL}`,
             state: state,
-            scope: 'profile openid',
+            scope: 'profile%20openid',
             nonce: generateRandomString(16),
         });
-        window.location.href = lineLoginUrl + params.toString()
+        window.location.href = lineLoginUrl 
+        //+ params.toString()
     };
 
     const generateRandomString = (length: number) => {

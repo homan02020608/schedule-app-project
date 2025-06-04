@@ -46,9 +46,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         if(profileData.error || profileData.aud !== process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID){
             console.error('LINE ID Token Verification Error:',profileData);
+            return res.redirect(`/settings?lineError=true&reason=id_token_verification_failed`);
+        }
+
+        if(profileData.error || profileData.aud !== process.env.NEXT_PUBLIC_LINE_LOGIN_CHANNEL_ID){
+            console.error('LINE ID Token Verification Error:',profileData);
             return res.redirect('/settings?lineError=true&reason=id_token_verification_failed')
         }
+
+        const lineUserId = profileData.sub;
+        console.log(`LINE User ID : ${lineUserId}`)
+
+        res.redirect(`/settings?lineConnected=true`)
+
     } catch (error) {
-        
+        console.error('LINE login Callback Processing Error:',error);
+        res.redirect('/settings?lineError=true&reason=server_error');
     }
 }  
