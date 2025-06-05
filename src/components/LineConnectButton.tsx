@@ -4,7 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { db } from '../../firebase/firebase';
 import { Button } from './ui/button';
-import Link from 'next/link';
+
 
 const LineConnectButton = () => {
     const { isLoaded, isSignedIn, user } = useUser();
