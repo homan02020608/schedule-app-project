@@ -1,7 +1,8 @@
 "use client"
-import React from 'react'
-import { z } from "zod"
 import { zodResolver } from '@hookform/resolvers/zod'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import {
     Form,
     FormControl,
@@ -31,104 +32,73 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-
-import { format } from "date-fns"
-import { useForm } from 'react-hook-form'
-import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { cn } from '@/lib/utils'
-import { CalendarIcon } from "lucide-react"
 import { Calendar } from './ui/calendar'
-import { addTodoFormData } from '../../firebase/firebaseFunction'
+import { CalendarIcon } from 'lucide-react'
+import { format } from 'date-fns'
+import { cn } from '@/lib/utils'
+import { Input } from '@mui/material'
 import { useAppSelector } from '@/redux/store'
-
+import { addCompanyFormData } from '../../firebase/firebaseFunction'
 
 const formSchema = z.object({
-    action_name: z.string().min(1),
-    completed: z.string(),
+    company_name: z.string().min(1),
     deadline: z.date(),
 })
 
-const TodoForm = ({ company_docId }: { company_docId: string }) => {
+const AddCompanyForm = () => {
     const user = useAppSelector((state) => state.user.user)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            action_name: "",
+            company_name: ''
         }
-
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const { action_name, completed , deadline} = values;
+        const { company_name, deadline } = values
         const userId = user?.id
-        console.log(action_name, completed ,deadline)
-        addTodoFormData({ action_name, completed, deadline, userId, company_docId })
+        addCompanyFormData({ userId, company_name, deadline })
         window.location.reload()
-        //console.log("Input Values:", values)
     }
-
     return (
         <div className='w-full flexEnd border-b-4 border-gray-400'>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant='link' className='hover:cursor-pointer '>Add Todo</Button>
+                    <Button variant='link' className='hover:cursor-pointer '>Add Company</Button>
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>
-                        <SheetTitle>Todo Form</SheetTitle>
+                        <SheetTitle>Company Form</SheetTitle>
                         <SheetDescription>
-                            Please Enter Your TodoItem
+                            Please Enter Your Entried Company
                         </SheetDescription>
                     </SheetHeader>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-4">
                             <FormField
                                 control={form.control}
-                                name='action_name'
+                                name='company_name'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Action</FormLabel>
+                                        <FormLabel>Company_name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder='Todo' {...field} />
+                                            <Input placeholder='会社名' {...field} />
                                         </FormControl>
                                         <FormDescription>
-                                            Enter Your Todo Items
+                                            Enter Company Name
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
+
                             <FormField
-                                control={form.control}
-                                name='completed'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>タスク完成状況</FormLabel>
-                                        <FormControl>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <SelectTrigger className="w-[180px]">
-                                                    <SelectValue placeholder="Select " />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="true">完成</SelectItem>
-                                                    <SelectItem value="false">未完成</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Please Select
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                                                    <FormField
                                 control={form.control}
                                 name="deadline"
                                 render={({ field }) => (
                                     <FormItem className="flex flex-col">
-                                        <FormLabel>Date of birth</FormLabel>
+                                        <FormLabel>Deadline</FormLabel>
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <FormControl>
@@ -155,7 +125,7 @@ const TodoForm = ({ company_docId }: { company_docId: string }) => {
                                                     //onDayClick={field.onChange}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < new Date() 
+                                                        date < new Date()
                                                     }
                                                     initialFocus
                                                 />
@@ -167,14 +137,16 @@ const TodoForm = ({ company_docId }: { company_docId: string }) => {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            /> 
+                            />
                             <Button type='submit'>Submit</Button>
                         </form>
                     </Form>
                 </SheetContent>
             </Sheet>
+
+
         </div>
     )
 }
 
-export default TodoForm
+export default AddCompanyForm

@@ -67,7 +67,7 @@ const LineConnectButton = () => {
     };
 
     if (!isLoaded || loading) {
-        return <p>LINE連携状態をp確認中...</p>
+        return <p>LINE連携状態を確認中...</p>
     }
 
     if (!isSignedIn) {
@@ -75,9 +75,9 @@ const LineConnectButton = () => {
     }
 
     return (
-        <div>
+        <div className='flexCenter bg-green-400 text-white rounded-xl p-4'>
             {lineConnected ? (
-                <p>LINE連携済みです。</p>
+                <p>LINE連携済み</p>
             ) : (
                 <Button
                     onClick={handleLineConnect}

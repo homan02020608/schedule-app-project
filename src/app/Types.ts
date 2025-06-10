@@ -30,3 +30,9 @@ export interface AddTodoFormData {
     userId: string | undefined;
     company_docId: string
 }
+
+export interface AddCompanyFormData {
+    company_name : string;
+    deadline : Date;
+    userId : string | undefined;
+}

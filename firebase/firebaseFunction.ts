@@ -1,7 +1,7 @@
-import { Timestamp, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebase"
 import { v4 } from "uuid";
-import { AddTodoFormData } from "@/app/Types";
+import { AddCompanyFormData, AddTodoFormData } from "@/app/Types";
 
 export const getCompanyData = async ({ userId, companyId }: { userId: string | null, companyId: string }) => {
     const companyDataQuery = query(collection(db, 'users', `${userId}`, 'company'), where('company_id', '==', `${companyId}`))
@@ -63,3 +63,17 @@ export const deleteTodoItem = async ({ userId, company_docId, todo_id }: any) =>
         console.error(error)
     }
 }   
+
+export const addCompanyFormData = async({userId , company_name , deadline} : AddCompanyFormData) => {
+    try {
+        const companyId = v4();
+        await addDoc(collection(db,'users',`${userId}`,'company') ,{
+            company_id : companyId,
+            company_name : company_name ,
+            created_at : new Date(),
+            deadline : deadline
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}

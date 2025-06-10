@@ -1,14 +1,15 @@
 import RecruitFlow from '@/components/RecruitFlow'
 import TodoList from '@/components/TodoList'
 import React from 'react'
-import { getCompanyData, getTodoListData } from '../../../../../firebase/firebaseFunction';
+import { getCompanyData } from '../../../../../firebase/firebaseFunction';
 import { CompanyList } from '@/app/Types';
 import { auth } from '@clerk/nextjs/server';
+
 
 const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
     const { companyId } = await params;
     const { userId } = await auth()
-    const companyData = await getCompanyData({userId, companyId  })
+    const companyData = await getCompanyData({ userId, companyId })
     
 
     return (
@@ -22,7 +23,7 @@ const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
                     />
                 </div>
             ))}
-
+            
         </div>
     )
 }
