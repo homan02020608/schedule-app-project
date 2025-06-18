@@ -44,30 +44,31 @@ import { useAppSelector } from '@/redux/store'
 
 
 const formSchema = z.object({
-    action_name: z.string().min(1),
+    todo_action: z.string().min(1),
     completed: z.string(),
     deadline: z.date(),
 })
 
-const TodoForm = ({ company_docId }: { company_docId: string }) => {
+const TodoForm = (companyIdProps : {companyId : string}) => {
     const user = useAppSelector((state) => state.user.user)
+    const { companyId } = companyIdProps; 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            action_name: "",
+            todo_action: "",
         }
 
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const { action_name, completed , deadline} = values;
+        const { todo_action, completed, deadline } = values;
         const userId = user?.id
-        console.log(action_name, completed ,deadline)
-        addTodoFormData({ action_name, completed, deadline, userId, company_docId })
+        console.log(todo_action, completed, deadline)
+        addTodoFormData({ companyId, completed, deadline, todo_action, userId, })
         window.location.reload()
         //console.log("Input Values:", values)
     }
-
+    
     return (
         <div className='w-full flexEnd border-b-4 border-gray-400'>
             <Sheet>
@@ -85,7 +86,7 @@ const TodoForm = ({ company_docId }: { company_docId: string }) => {
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-4">
                             <FormField
                                 control={form.control}
-                                name='action_name'
+                                name='todo_action'
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Action</FormLabel>
@@ -123,7 +124,7 @@ const TodoForm = ({ company_docId }: { company_docId: string }) => {
                                     </FormItem>
                                 )}
                             />
-                                                    <FormField
+                            <FormField
                                 control={form.control}
                                 name="deadline"
                                 render={({ field }) => (
@@ -155,7 +156,7 @@ const TodoForm = ({ company_docId }: { company_docId: string }) => {
                                                     //onDayClick={field.onChange}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < new Date() 
+                                                        date < new Date()
                                                     }
                                                     initialFocus
                                                 />
@@ -167,7 +168,7 @@ const TodoForm = ({ company_docId }: { company_docId: string }) => {
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            /> 
+                            />
                             <Button type='submit'>Submit</Button>
                         </form>
                     </Form>
