@@ -29,15 +29,18 @@ export const getTodoListData = async ({ userId, company_docId }: { userId: strin
 
 }
 
-export const addTodoFormData = async ({ action_name, completed, deadline, userId, company_docId }: AddTodoFormData) => {
+export const addTodoFormData = async ({ companyId, completed, deadline, todo_action, userId, }: AddTodoFormData) => {
     try {
         const todoId = v4();
-        await setDoc(doc(db, 'users', `${userId}`, 'company', `${company_docId}`, "todoList", `${todoId}`), {
-            todo_action: action_name,
-            todo_id: todoId,
+        await setDoc(doc(db, 'todoReminder', `${todoId}`), {
+            company_id: companyId,
             completed: completed,
-            deadline: deadline,
             created_at: new Date(),
+            deadline: deadline,
+            todo_action : todo_action,
+            todo_id : todoId,
+            updated_at : new Date(),
+            user_id : userId,
         })
     } catch (error) {
         console.error(error)
@@ -62,16 +65,16 @@ export const deleteTodoItem = async ({ userId, company_docId, todo_id }: any) =>
     } catch (error) {
         console.error(error)
     }
-}   
+}
 
-export const addCompanyFormData = async({userId , company_name , deadline} : AddCompanyFormData) => {
+export const addCompanyFormData = async ({ userId, company_name, deadline }: AddCompanyFormData) => {
     try {
         const companyId = v4();
-        await addDoc(collection(db,'users',`${userId}`,'company') ,{
-            company_id : companyId,
-            company_name : company_name ,
-            created_at : new Date(),
-            deadline : deadline
+        await addDoc(collection(db, 'users', `${userId}`, 'company'), {
+            company_id: companyId,
+            company_name: company_name,
+            created_at: new Date(),
+            deadline: deadline
         })
     } catch (error) {
         console.error(error)
