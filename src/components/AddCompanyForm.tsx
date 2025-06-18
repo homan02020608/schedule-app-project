@@ -62,7 +62,7 @@ const AddCompanyForm = () => {
         window.location.reload()
     }
     return (
-        <div className='w-full flexEnd border-b-4 border-gray-400'>
+        <div className='w-full flexEnd border-b border-gray-400'>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant='link' className='hover:cursor-pointer '>Add Company</Button>
