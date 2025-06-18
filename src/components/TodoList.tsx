@@ -14,8 +14,7 @@ import {
 } from "@/components/ui/table"
 import DeleteDialog from './DeleteDialog'
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button } from './ui/button'
-import Link from 'next/link'
+
 
 
 
@@ -38,16 +37,8 @@ const TodoList = ({ userId, company_docId }: { userId: String | null; company_do
     }
 
     return (
-        <div className='p-2 m-4 border-2 flexCenter flex-col'>
-            <h1 className='font-light text-3xl '>選考項目一覧</h1>
-            <div className="w-full flexEnd">
-                <Button variant="link" className='hover:cursor-pointer p-2'>
-                    <Link href={"/settings"}>LINE連携はこちらへ</Link>
-                </Button>
-            </div>
-            <TodoForm
-                company_docId={company_docId}
-            />
+        <div className='p-2 m-4 border-2 '>
+
             <Table>
                 <TableHeader>
                     <TableRow>
