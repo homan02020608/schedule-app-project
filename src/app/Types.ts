@@ -24,11 +24,11 @@ export interface TodoListData {
 }
 
 export interface AddTodoFormData {
-    action_name: string;
+    todo_action: string;
     completed: string;
     deadline?: Date;
     userId: string | undefined;
-    company_docId: string
+    companyId: string
 }
 
 export interface AddCompanyFormData {
