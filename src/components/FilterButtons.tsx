@@ -9,11 +9,13 @@ const FilterButtons = () => {
     const router = useRouter();
     const searchParams = useSearchParams()
 
+
     const handleFilterClick = (status : FilterStatus) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('status' , status)
         router.push(`?${params.toString()}`);
     }
+
 
     return (
         <div className='flex gap-10'>

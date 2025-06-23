@@ -1,9 +1,10 @@
-"use client"
 import BackButton from '@/components/BackButton'
 import LineConnectButton from '@/components/LineConnectButton'
 import React from 'react'
 
-const page = () => {
+
+const page = async () => {
+
   return (
     <div className='flexCenter flex-col border-2 border-gray-300 rounded-xl m-4 p-4 gap-4'>
       <h1 className='text-3xl font-light'>Settings</h1>
@@ -17,7 +18,6 @@ const page = () => {
       
       <LineConnectButton />
       {/* <LineSendMessage/> */}
-      
     </div>
   )
 }

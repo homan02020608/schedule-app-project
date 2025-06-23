@@ -12,7 +12,7 @@ export const getCompanyData = async ({ userId, companyId }: { userId: string | n
     return companyData;
 }
 
-export const fetchCompanyListData = async (userId: string | null) => {
+export const fetchCompanyListData = async (userId: string | null | undefined) => {
     const companySnapshot = await getDocs((collection(db, "users", `${userId}`, "company")))
     const companyListInfo = companySnapshot.docs.map((doc) => ({
         ...doc.data(), id: doc.id
@@ -37,10 +37,10 @@ export const addTodoFormData = async ({ companyId, completed, deadline, todo_act
             completed: completed,
             created_at: new Date(),
             deadline: deadline,
-            todo_action : todo_action,
-            todo_id : todoId,
-            updated_at : new Date(),
-            user_id : userId,
+            todo_action: todo_action,
+            todo_id: todoId,
+            updated_at: new Date(),
+            user_id: userId,
         })
     } catch (error) {
         console.error(error)

@@ -6,6 +6,7 @@ export interface CompanyList {
     created_at?: Timestamp
     id: string
     deadline?: Timestamp
+    status?: string
 }
 export interface CompanyCard {
     company_id?: string
