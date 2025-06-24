@@ -6,20 +6,24 @@ import { CompanyList } from '@/app/Types'
 import FilterButtons from './FilterButtons'
 
 
+
 const EntriedCompanyList = async (props: { currentStatus: string }) => {
 
     const { userId } = await auth()
     const companyData: CompanyList[] = await fetchCompanyListData(userId)
-    const currentStatus = props.currentStatus || 'in_progress';
+    const currentStatus  = props.currentStatus ;
 
     const filteredCompanies = companyData.filter(company => {
+        if (currentStatus === 'all'){
+            return true;
+        }
         return company.status === currentStatus
     })
-    
+
     return (
-        <div className='flexCenter flex-col border-2 m-4 '>
-            <h1 className='font-light text-2xl border-b-2 p-2 m-4'>企業一覧</h1>
-            <FilterButtons />
+        <div className='flexCenter flex-col m-4 '>
+            <h1 className='font-light text-2xl  p-2 m-4'>企業一覧</h1>
+            <FilterButtons currentStatus={currentStatus}/>
             <div>
                 {filteredCompanies.map((data: CompanyList) => (
                     <div key={data.id}>
