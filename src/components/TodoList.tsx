@@ -17,22 +17,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
-
-
-
-const TodoList = ({ userId, company_docId }: { userId: String | null; company_docId: string; }) => {
+const TodoList = ({ userId, companyId }: { userId: String | null; companyId: string; }) => {
     const [todoListData, setTodoListData] = useState<TodoListData[]>()
     
     useEffect(() => {
         const getTodoList = async () => {
-            const todoData = await getTodoListData({ userId, company_docId })
+            const todoData = await getTodoListData({ userId, companyId })
             setTodoListData(todoData)
         }
         getTodoList()
     }, [])
-
-    const deleteTodo = (userId: string | any, company_docId: string, todo_id: string | undefined) => {
-        deleteTodoItem({ userId, company_docId, todo_id })
+    
+    const deleteTodo = (todo_id: string | undefined) => {
+        deleteTodoItem(todo_id)
         window.location.reload()
     }
 
@@ -57,7 +54,7 @@ const TodoList = ({ userId, company_docId }: { userId: String | null; company_do
                             <TableCell className="text-right ">{todo.created_at?.toDate().toLocaleDateString()}</TableCell>
                             <TableCell className='text-center '>
                                 <DeleteDialog
-                                    onClick={() => deleteTodo(userId, company_docId, todo.todo_id)}
+                                    onClick={() => deleteTodo(todo.todo_id)}
                                 >
                                     <DeleteIcon />
                                 </DeleteDialog>
