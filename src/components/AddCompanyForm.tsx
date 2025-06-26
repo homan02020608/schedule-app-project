@@ -25,6 +25,13 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { Button } from './ui/button'
 import { Calendar } from './ui/calendar'
 import { CalendarIcon } from 'lucide-react'
@@ -37,6 +44,9 @@ import { useUser } from '@clerk/nextjs'
 
 const formSchema = z.object({
     company_name: z.string().min(1),
+    details: z.string().min(1),
+    occupation: z.string().min(1),
+    status: z.string({ required_error: "Please select status" }).min(1),
     deadline: z.date(),
 })
 
@@ -46,18 +56,20 @@ const AddCompanyForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            company_name: ''
+            company_name: '',
+            details: '',
+            occupation: '',
         }
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const { company_name, deadline } = values
+        const { company_name, deadline, details, occupation, status } = values
         const userId = user?.id
-        addCompanyFormData({ userId, company_name, deadline })
+        addCompanyFormData({ userId, company_name, deadline, details, occupation, status })
         window.location.reload()
     }
 
-    
+
     return (
         <div className='w-full flexEnd border-b border-gray-400'>
             {isSignedIn
@@ -88,6 +100,63 @@ const AddCompanyForm = () => {
                                                 Enter Company Name
                                             </FormDescription>
                                             <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name='details'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Details</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder='選考内容' {...field} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter details
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name='occupation'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Occupation</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder='職種' {...field} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter occupation
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name='status'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Status</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select Status" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value="interested">気になる</SelectItem>
+                                                    <SelectItem value="in_progress">選考中</SelectItem>
+                                                    <SelectItem value="completed">選考終了</SelectItem>
+                                                </SelectContent>
+                                                <FormMessage />
+                                            </Select>
                                         </FormItem>
                                     )}
                                 />
