@@ -75,7 +75,7 @@ const LineConnectButton = () => {
     }
 
     return (
-        <div className='flexCenter bg-green-400 text-white rounded-xl p-4'>
+        <div className='flexCenter bg-green-500 text-white rounded-xl p-2 px-4'>
             {lineConnected ? (
                 <p>LINE連携済み</p>
             ) : (

@@ -14,13 +14,13 @@ const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
     const { companyId } = await params;
     const { userId } = await auth()
     const companyData = await getCompanyData({ userId, companyId })
-
+    
     return (
         <div className=''>
             <RecruitFlow />
             <div className='flexCenter flex-col'>
                 <h1 className='font-light text-3xl '>選考項目一覧</h1>
-                <p>{}</p>
+                
                 <TodoForm
                     companyId={String(companyId)}
                 />
@@ -33,7 +33,7 @@ const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
                     <div key={data.id} className='w-full'>
                         <TodoList
                             userId={userId}
-                            company_docId={data.id}
+                            companyId={companyId}
                         />
                     </div>
                 ))}

@@ -6,17 +6,14 @@ import React from 'react'
 const page = async () => {
 
   return (
-    <div className='flexCenter flex-col border-2 border-gray-300 rounded-xl m-4 p-4 gap-4'>
+    <div className='flexCenter flex-col  rounded-xl m-4 p-4 gap-4'>
       <h1 className='text-3xl font-light'>Settings</h1>
-      <div className='w-full flexStart'>
+      <div className='w-full flexBetween'>
         <BackButton />
+        <LineConnectButton />
       </div>
-      <div className='rounded-xl p-4 px-8 border bg-white hover:bg-gray-100 hover:cursor-pointer'>Testing</div>
-      <div className='rounded-xl p-4 px-8 border bg-white hover:bg-gray-100 hover:cursor-pointer'>Testing</div>
-      <div className='rounded-xl p-4 px-8 border bg-white hover:bg-gray-100 hover:cursor-pointer'>Testing</div>
-      <div className='rounded-xl p-4 px-8 border bg-white hover:bg-gray-100 hover:cursor-pointer'>Testing</div>
+    
       
-      <LineConnectButton />
       {/* <LineSendMessage/> */}
     </div>
   )
