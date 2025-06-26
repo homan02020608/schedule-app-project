@@ -20,8 +20,8 @@ export const fetchCompanyListData = async (userId: string | null | undefined) =>
     return companyListInfo;
 }
 
-export const getTodoListData = async ({ userId, company_docId }: { userId: string | any; company_docId: string }) => {
-    const todoListSnapshot = await getDocs(collection(db, 'users', `${userId}`, 'company', `${company_docId}`, 'todoList'));
+export const getTodoListData = async ({ userId, companyId }: { userId: string | any; companyId: string }) => {
+    const todoListSnapshot = await getDocs(query(collection(db,"todoReminder"),where("company_id",'==',`${companyId}`), where("user_id" ,"==" ,`${userId}`) ));
     const todoListData = todoListSnapshot.docs.map((doc) => ({
         ...doc.data()
     }))
@@ -59,22 +59,25 @@ export const addRecruitFlow = async (recruitFlowData: any) => {
 }
 //userId: string | any, company_docId: string, todo_id: string | undefined
 
-export const deleteTodoItem = async ({ userId, company_docId, todo_id }: any) => {
+export const deleteTodoItem = async ( todo_id  : string | undefined) => {
     try {
-        await deleteDoc(doc(db, "users", `${userId}`, "company", `${company_docId}`, "todoList", `${todo_id}`))
+        await deleteDoc(doc(db, "todoReminder" , `${todo_id}`))
     } catch (error) {
         console.error(error)
     }
 }
 
-export const addCompanyFormData = async ({ userId, company_name, deadline }: AddCompanyFormData) => {
+export const addCompanyFormData = async ({ userId, company_name, deadline, details, occupation, status }: AddCompanyFormData) => {
     try {
         const companyId = v4();
         await addDoc(collection(db, 'users', `${userId}`, 'company'), {
             company_id: companyId,
             company_name: company_name,
             created_at: new Date(),
-            deadline: deadline
+            deadline: deadline,
+            details : details,
+            occupation : occupation,
+            status : status,
         })
     } catch (error) {
         console.error(error)
