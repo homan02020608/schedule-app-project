@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebase"
 import { v4 } from "uuid";
 import { AddCompanyFormData, AddTodoFormData } from "@/app/Types";
@@ -13,7 +13,7 @@ export const getCompanyData = async ({ userId, companyId }: { userId: string | n
 }
 
 export const fetchCompanyListData = async (userId: string | null | undefined) => {
-    const companySnapshot = await getDocs((collection(db, "users", `${userId}`, "company")))
+    const companySnapshot = await getDocs(query(collection(db, "users", `${userId}`, "company"), orderBy("deadline","asc")))
     const companyListInfo = companySnapshot.docs.map((doc) => ({
         ...doc.data(), id: doc.id
     }))

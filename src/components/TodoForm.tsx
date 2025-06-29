@@ -63,10 +63,8 @@ const TodoForm = (companyIdProps : {companyId : string}) => {
     function onSubmit(values: z.infer<typeof formSchema>) {
         const { todo_action, completed, deadline } = values;
         const userId = user?.id
-        console.log(todo_action, completed, deadline)
         addTodoFormData({ companyId, completed, deadline, todo_action, userId, })
         window.location.reload()
-        //console.log("Input Values:", values)
     }
     
     return (
