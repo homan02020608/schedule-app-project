@@ -1,11 +1,10 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { deleteTodoItem, getTodoListData } from '../../firebase/firebaseFunction'
+import { deleteTodoItem, editTodoItem, getTodoListData } from '../../firebase/firebaseFunction'
 import { TodoListData } from '@/app/Types'
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -25,6 +24,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Input } from './ui/input'
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from './ui/button'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
 import {
     Form,
     FormControl,
@@ -34,8 +35,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -48,10 +47,10 @@ const FormSchema = z.object({
 
 const TodoList = ({ userId, companyId }: { userId: String | null; companyId: string; }) => {
     const [todoListData, setTodoListData] = useState<TodoListData[]>()
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [isEditModeIndex, setIsEditModeIndex] = useState(null);
-    const [editCompleted, setEditCompleted] = useState<string>("");
-    const [editTodoAction, setEditTodoAction] = useState<string>("");
+    const [isEditMode, setIsEditMode] = useState(true);
+    const [isEditModeIndex, setIsEditModeIndex] = useState<number | null>();
+    const [editedTodoId, setEditedTodoId] = useState<string | undefined>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -73,13 +72,28 @@ const TodoList = ({ userId, companyId }: { userId: String | null; companyId: str
         window.location.reload()
     }
 
-    const handleEditMode = () => {
-        setIsEditMode(!isEditMode)
+    const handleEditMode = (editModeIndex: number , todo_id : string | undefined ,) => {
+        setIsEditMode(true)
+        setIsEditModeIndex(editModeIndex)
+        setEditedTodoId(todo_id)
     }
 
     const handleCancelEditMode = () => {
-        setIsEditMode(!isEditMode)
-        setEditCompleted('')
+        setIsEditMode(false);
+        setIsEditModeIndex(null);
+        setEditedTodoId("")
+        form.reset()
+    }
+
+    const handleSubmitEditedTodo = (values: z.infer<typeof FormSchema>) => {
+        setLoading(true)
+        const { todo_action, completed } = values;
+        editTodoItem({ editedTodoId, todo_action, completed })
+        window.location.reload()
+        setIsEditModeIndex(null)
+        setEditedTodoId("")
+        setLoading(false)
+        setIsEditMode(false)
     }
 
     return (
@@ -98,42 +112,73 @@ const TodoList = ({ userId, companyId }: { userId: String | null; companyId: str
                 <TableBody>
                     {todoListData?.map((todo, index) => {
                         return (
-                            isEditMode ?
+                            (isEditMode && index === isEditModeIndex) ?
                                 (
                                     <TableRow key={todo.todo_id}>
                                         <TableCell>
-                                            <Input
-                                                type='text'
-                                                placeholder={`${todo.todo_action}`}
-                                                onChange={(e) => setEditTodoAction(e.target.value)}
-                                            />
+                                            <Form {...form}>
+                                                <form onSubmit={form.handleSubmit(handleSubmitEditedTodo)}>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name='todo_action'
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormControl>
+                                                                    <Input
+                                                                        placeholder='todo_action'
+                                                                        className={`${loading && 'pointer-events-none'}`}
+                                                                        {...field}
+
+                                                                    />
+                                                                </FormControl>
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </form>
+                                            </Form>
                                         </TableCell>
+
                                         <TableCell>
-                                            <Select
-                                                onValueChange={(value) => setEditCompleted(value)}
-                                            >
-                                                <SelectTrigger className='w-[150px]'>
-                                                    <SelectValue placeholder={todo.completed ? '完成' : '未完成'} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectLabel>Status</SelectLabel>
-                                                        <SelectItem value="true">完成</SelectItem>
-                                                        <SelectItem value="false">未完成</SelectItem>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
+                                            <Form {...form} >
+                                                <form onSubmit={form.handleSubmit(handleSubmitEditedTodo)}>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name='completed'
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormControl>
+                                                                    <Select onValueChange={field.onChange} >
+                                                                        <SelectTrigger className={`w-[150px] ${loading && 'pointer-events-none'}`}>
+                                                                            <SelectValue placeholder={todo.completed ? '完成' : '未完成'} />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectGroup>
+                                                                                <SelectLabel>Status</SelectLabel>
+                                                                                <SelectItem value="true">完成</SelectItem>
+                                                                                <SelectItem value="false">未完成</SelectItem>
+                                                                            </SelectGroup>
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </FormControl>
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </form>
+                                            </Form>
                                         </TableCell>
 
                                         <TableCell>{todo.deadline?.toDate().toLocaleDateString()}</TableCell>
                                         <TableCell className="text-right ">{todo.created_at?.toDate().toLocaleDateString()}</TableCell>
-                                        <TableCell className='flexCenter gap-2'>
+
+                                        <TableCell className='flexCenter gap-4'>
                                             <Button
                                                 size={"sm"}
                                                 variant={"outline"}
                                                 className='hover:cursor-pointer'
+                                                type='button'
+                                                onClick={form.handleSubmit(handleSubmitEditedTodo)}
                                             >
-                                                <span>変更</span>
+                                                <span>変更確定</span>
                                             </Button>
                                             <Button
                                                 size={"sm"}
@@ -141,7 +186,7 @@ const TodoList = ({ userId, companyId }: { userId: String | null; companyId: str
                                                 className='hover:cursor-pointer'
                                                 onClick={() => handleCancelEditMode()}
                                             >
-                                                <CancelIcon/>
+                                                <CancelIcon />
                                             </Button>
                                         </TableCell>
                                     </TableRow>
@@ -163,7 +208,7 @@ const TodoList = ({ userId, companyId }: { userId: String | null; companyId: str
                                                 size={"lg"}
                                                 variant={"outline"}
                                                 className='hover:cursor-pointer'
-                                                onClick={() => handleEditMode()}
+                                                onClick={() => handleEditMode(index , todo.todo_id)}
                                             >
                                                 <EditIcon /><span>編集</span>
                                             </Button>

@@ -13,7 +13,7 @@ export const getCompanyData = async ({ userId, companyId }: { userId: string | n
 }
 
 export const fetchCompanyListData = async (userId: string | null | undefined) => {
-    const companySnapshot = await getDocs(query(collection(db, "users", `${userId}`, "company"), orderBy("deadline","asc")))
+    const companySnapshot = await getDocs(query(collection(db, "users", `${userId}`, "company"), orderBy("deadline", "asc")))
     const companyListInfo = companySnapshot.docs.map((doc) => ({
         ...doc.data(), id: doc.id
     }))
@@ -21,7 +21,7 @@ export const fetchCompanyListData = async (userId: string | null | undefined) =>
 }
 
 export const getTodoListData = async ({ userId, companyId }: { userId: string | any; companyId: string }) => {
-    const todoListSnapshot = await getDocs(query(collection(db,"todoReminder"),where("company_id",'==',`${companyId}`), where("user_id" ,"==" ,`${userId}`) ));
+    const todoListSnapshot = await getDocs(query(collection(db, "todoReminder"), where("company_id", '==', `${companyId}`), where("user_id", "==", `${userId}`)));
     const todoListData = todoListSnapshot.docs.map((doc) => ({
         ...doc.data()
     }))
@@ -59,9 +59,9 @@ export const addRecruitFlow = async (recruitFlowData: any) => {
 }
 //userId: string | any, company_docId: string, todo_id: string | undefined
 
-export const deleteTodoItem = async ( todo_id  : string | undefined) => {
+export const deleteTodoItem = async (todo_id: string | undefined) => {
     try {
-        await deleteDoc(doc(db, "todoReminder" , `${todo_id}`))
+        await deleteDoc(doc(db, "todoReminder", `${todo_id}`))
     } catch (error) {
         console.error(error)
     }
@@ -75,9 +75,21 @@ export const addCompanyFormData = async ({ userId, company_name, deadline, detai
             company_name: company_name,
             created_at: new Date(),
             deadline: deadline,
-            details : details,
-            occupation : occupation,
-            status : status,
+            details: details,
+            occupation: occupation,
+            status: status,
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const editTodoItem = async ({ editedTodoId, todo_action, completed }: { editedTodoId: string | undefined; todo_action: string; completed: string }) => {
+    try {
+        await updateDoc(doc(db, 'todoReminder', `${editedTodoId}`), {
+            todo_action: todo_action,
+            completed: completed,
+            updated_at: new Date(),
         })
     } catch (error) {
         console.error(error)
