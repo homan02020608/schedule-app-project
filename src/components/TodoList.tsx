@@ -97,15 +97,15 @@ const TodoList = ({ userId, companyId }: { userId: String | null; companyId: str
     }
 
     return (
-        <div className='p-2 m-4 border-2 '>
+        <div className='p-2 m-4  '>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[200px] bg-red-100">TodoItems</TableHead>
-                        <TableHead className='w-[150px] bg-fuchsia-100'>Status</TableHead>
-                        <TableHead className='w-[100px] bg-green-100 '>Deadline</TableHead>
-                        <TableHead className="w-[100px] text-right bg-blue-100">Created_At</TableHead>
-                        <TableHead className="text-right bg-amber-300 w-[30px]"></TableHead>
+                        <TableHead className="w-[100px]">TodoItems</TableHead>
+                        <TableHead className='w-[100px]'>Status</TableHead>
+                        <TableHead className='w-[30px]'>Deadline</TableHead>
+                        <TableHead className="w-[50px] text-right ">Created_At</TableHead>
+                        <TableHead className="w-[30px] text-right "></TableHead>
 
                     </TableRow>
                 </TableHeader>
@@ -170,7 +170,7 @@ const TodoList = ({ userId, companyId }: { userId: String | null; companyId: str
                                         <TableCell>{todo.deadline?.toDate().toLocaleDateString()}</TableCell>
                                         <TableCell className="text-right ">{todo.created_at?.toDate().toLocaleDateString()}</TableCell>
 
-                                        <TableCell className='flexCenter gap-4'>
+                                        <TableCell className='flexCenter gap-2'>
                                             <Button
                                                 size={"sm"}
                                                 variant={"outline"}

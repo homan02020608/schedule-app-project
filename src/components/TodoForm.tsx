@@ -68,7 +68,7 @@ const TodoForm = (companyIdProps : {companyId : string}) => {
     }
     
     return (
-        <div className='w-full flexEnd border-b-4 border-gray-400'>
+        <div className='w-full flexEnd border-b '>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant='link' className='hover:cursor-pointer '>Add Todo</Button>
