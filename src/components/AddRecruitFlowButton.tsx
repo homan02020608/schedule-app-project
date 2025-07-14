@@ -31,40 +31,35 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from './ui/input'
 import { addRecruitFlow } from '../../firebase/firebaseFunction'
 
-type SelectionFlow = {
-    selection_name?: string
+interface SelectionFlow {
+    recruit_selection?: string
     completed?: string
     id?: string
 }
 
-type RecruitFlowData = {
+interface RecruitFlowData {
     recruitFlowData: SelectionFlow[];
 }
 
 const formSchema = z.object({
-    selection_name: z.string().min(1),
-    completed: z.string(),
+    recruit_selection: z.string().min(1),
+    result: z.string(),
 })
 
-const testingData = [
-    { selection_name: "書類選考", completed: "true" },
-    { selection_name: "一次面接", completed: "true" },
-    { selection_name: "二次面接", completed: "true" },
-]
 
-const AddRecruitFlowButton : React.FC<RecruitFlowData> = ( {recruitFlowData} ) => {
+const AddRecruitFlowButton = () => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            selection_name: "",
+            recruit_selection: "",
         }
 
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        let testing = [...testingData, { ...values }]
-        addRecruitFlow(testing)
+        const { recruit_selection, result } = values
+        addRecruitFlow({recruit_selection, result})
         window.location.reload()
     }
     return (
@@ -84,12 +79,12 @@ const AddRecruitFlowButton : React.FC<RecruitFlowData> = ( {recruitFlowData} ) =
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col p-4">
                             <FormField
                                 control={form.control}
-                                name='selection_name'
+                                name='recruit_selection'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Process</FormLabel>
+                                        <FormLabel>選考フロー</FormLabel>
                                         <FormControl>
-                                            <Input placeholder='Todo' {...field} />
+                                            <Input placeholder='selection' {...field} />
                                         </FormControl>
                                         <FormDescription>
                                             Enter Your New Process
@@ -100,10 +95,10 @@ const AddRecruitFlowButton : React.FC<RecruitFlowData> = ( {recruitFlowData} ) =
                             />
                             <FormField
                                 control={form.control}
-                                name='completed'
+                                name='result'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>選考状況</FormLabel>
+                                        <FormLabel>選考結果</FormLabel>
                                         <FormControl>
                                             <Select onValueChange={field.onChange} >
                                                 <SelectTrigger className="w-[180px]">

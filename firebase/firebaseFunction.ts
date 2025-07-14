@@ -47,11 +47,15 @@ export const addTodoFormData = async ({ companyId, completed, deadline, todo_act
     }
 }
 
-export const addRecruitFlow = async (recruitFlowData: any) => {
+export const addRecruitFlow = async ({ recruit_selection, result }: { recruit_selection: string, result: string }) => {
     try {
-        const recruitFlowRef = doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', 'recruitFlow', 'xXtTCh1nMKWE3QYVhmuM')
-        await updateDoc(recruitFlowRef, {
-            selectionFlow: recruitFlowData
+        const recruitFlowId = v4();
+        await setDoc(doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', 'recruitFlow', `${recruitFlowId}`), {
+            recruit_selection: recruit_selection,
+            result: result,
+            created_at: new Date(),
+            updated_at: new Date(),
+
         })
     } catch (error) {
         console.error(error)
