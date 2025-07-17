@@ -11,22 +11,25 @@ interface RecruitFlow {
     id?: string
     recruit_selection?: string
     result?: string
-    created_at? : Date
-    updated_at? : Date
+    created_at?: Date
+    updated_at?: Date
 }
 
 
-const RecruitFlow = async () => {
-    const recruitFlowSnapShot = await getDocs(query(collection(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', 'recruitFlow'), orderBy("created_at","asc")))
+const RecruitFlow = async ({ companyId, userId }: { companyId: string; userId: string | null }) => {
+    const recruitFlowSnapShot = await getDocs(query(collection(db, 'users', `${userId}`, 'company', `${companyId}`, 'recruitFlow'), orderBy("created_at", "asc")))
     const recruitFlowData = recruitFlowSnapShot.docs.map((doc) => ({
         ...doc.data(), id: doc.id
     }))
-
+    
     return (
         <div className='flexCenter flex-col  m-4 p-4'>
             <div className='flexBetween w-full'>
                 <BackButton />
-                <AddRecruitFlowButton />
+                <AddRecruitFlowButton
+                    companyId={companyId}
+                    userId={userId}
+                />
             </div>
 
             <h1 className='font-light text-3xl p-2 m-4 '>選考フロー</h1>

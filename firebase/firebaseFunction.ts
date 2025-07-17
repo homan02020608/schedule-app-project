@@ -47,10 +47,10 @@ export const addTodoFormData = async ({ companyId, completed, deadline, todo_act
     }
 }
 
-export const addRecruitFlow = async ({ recruit_selection, result }: { recruit_selection: string, result: string }) => {
+export const addRecruitFlow = async ({ recruit_selection, result, companyId, userId }: { recruit_selection: string; result: string; companyId: string ; userId : string | null  }) => {
     try {
         const recruitFlowId = v4();
-        await setDoc(doc(db, 'company', 'dU8hCMB6IGXAUGPsF6Qt', 'recruitFlow', `${recruitFlowId}`), {
+        await setDoc(doc(db, 'users', `${userId}`,'company',`${companyId}`, 'recruitFlow', `${recruitFlowId}`), {
             recruit_selection: recruit_selection,
             result: result,
             created_at: new Date(),
@@ -74,7 +74,7 @@ export const deleteTodoItem = async (todo_id: string | undefined) => {
 export const addCompanyFormData = async ({ userId, company_name, deadline, details, occupation, status }: AddCompanyFormData) => {
     try {
         const companyId = v4();
-        await addDoc(collection(db, 'users', `${userId}`, 'company'), {
+        await setDoc(doc(db, 'users', `${userId}`, 'company',`${companyId}`), {
             company_id: companyId,
             company_name: company_name,
             created_at: new Date(),
@@ -88,9 +88,9 @@ export const addCompanyFormData = async ({ userId, company_name, deadline, detai
     }
 }
 
-export const editTodoItem = async ({ editedTodoId, todo_action, completed }: { editedTodoId: string | undefined; todo_action: string; completed: string }) => {
+export const editTodoItem = async ({ todo_id, todo_action, completed }: { todo_id: string | undefined; todo_action: string; completed: string }) => {
     try {
-        await updateDoc(doc(db, 'todoReminder', `${editedTodoId}`), {
+        await updateDoc(doc(db, 'todoReminder', `${todo_id}`), {
             todo_action: todo_action,
             completed: completed,
             updated_at: new Date(),

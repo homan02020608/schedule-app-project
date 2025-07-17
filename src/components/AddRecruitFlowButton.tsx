@@ -31,15 +31,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from './ui/input'
 import { addRecruitFlow } from '../../firebase/firebaseFunction'
 
-interface SelectionFlow {
-    recruit_selection?: string
-    completed?: string
-    id?: string
-}
-
-interface RecruitFlowData {
-    recruitFlowData: SelectionFlow[];
-}
 
 const formSchema = z.object({
     recruit_selection: z.string().min(1),
@@ -47,7 +38,7 @@ const formSchema = z.object({
 })
 
 
-const AddRecruitFlowButton = () => {
+const AddRecruitFlowButton = ({ companyId, userId }: { companyId: string; userId: string | null }) => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -59,20 +50,20 @@ const AddRecruitFlowButton = () => {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         const { recruit_selection, result } = values
-        addRecruitFlow({recruit_selection, result})
+        addRecruitFlow({ recruit_selection, result, companyId, userId })
         window.location.reload()
     }
     return (
         <div className=' '>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant='link' className='hover:cursor-pointer '>Add Process</Button>
+                    <Button variant='link' className='hover:cursor-pointer '>選考フロー追加はこちら</Button>
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>
                         <SheetTitle>Process Form</SheetTitle>
                         <SheetDescription>
-                            Please Enter Your TodoItem
+                            Please Enter Your Process
                         </SheetDescription>
                     </SheetHeader>
                     <Form {...form}>
