@@ -26,7 +26,7 @@ export interface TodoListData {
     todo_action?: string
     deadline?: Timestamp
     created_at?: Timestamp
-    completed?: boolean
+    completed?: 'true' | 'false'
 }
 
 export interface AddTodoFormData {

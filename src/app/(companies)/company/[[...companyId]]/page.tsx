@@ -17,7 +17,10 @@ const page = async ({ params }: { params: Promise<{ companyId: string }> }) => {
     
     return (
         <div className=''>
-            <RecruitFlow />
+            <RecruitFlow 
+                companyId={companyId}
+                userId={userId}
+            />
             <div className='flexCenter flex-col'>
                 <h1 className='font-light text-3xl '>選考項目一覧</h1>
                 
