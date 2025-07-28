@@ -30,6 +30,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from './ui/input'
 import { addRecruitFlow } from '../../firebase/firebaseFunction'
+import AddIcon from '@mui/icons-material/Add';
 
 
 const formSchema = z.object({
@@ -54,10 +55,13 @@ const AddRecruitFlowButton = ({ companyId, userId }: { companyId: string; userId
         window.location.reload()
     }
     return (
-        <div className=' '>
+        <div>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant='link' className='hover:cursor-pointer '>選考フロー追加はこちら</Button>
+                    <Button variant='outline' className='bg-white text-black  hover:bg-accent hover:cursor-pointer'>
+                        <AddIcon />
+                        <p>選考フロー追加</p>
+                    </Button>
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>

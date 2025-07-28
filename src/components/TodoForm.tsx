@@ -41,6 +41,7 @@ import { CalendarIcon } from "lucide-react"
 import { Calendar } from './ui/calendar'
 import { addTodoFormData } from '../../firebase/firebaseFunction'
 import { useAppSelector } from '@/redux/store'
+import AddIcon from '@mui/icons-material/Add';
 
 
 const formSchema = z.object({
@@ -49,9 +50,9 @@ const formSchema = z.object({
     deadline: z.date(),
 })
 
-const TodoForm = (companyIdProps : {companyId : string}) => {
+const TodoForm = (companyIdProps: { companyId: string }) => {
     const user = useAppSelector((state) => state.user.user)
-    const { companyId } = companyIdProps; 
+    const { companyId } = companyIdProps;
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -66,12 +67,15 @@ const TodoForm = (companyIdProps : {companyId : string}) => {
         addTodoFormData({ companyId, completed, deadline, todo_action, userId, })
         window.location.reload()
     }
-    
+
     return (
-        <div className='w-full flexEnd border-b '>
+        <div className='w-full flexEnd '>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant='link' className='hover:cursor-pointer '>Add Todo</Button>
+                    <Button variant='outline' className='bg-white text-black m-4 hover:bg-accent hover:cursor-pointer'>
+                        <AddIcon />
+                        <p>Todo追加</p>
+                    </Button>
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>

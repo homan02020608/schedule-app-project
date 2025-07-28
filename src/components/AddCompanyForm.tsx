@@ -41,6 +41,7 @@ import { Input } from '@mui/material'
 import { useAppSelector } from '@/redux/store'
 import { addCompanyFormData } from '../../firebase/firebaseFunction'
 import { useUser } from '@clerk/nextjs'
+import AddIcon from '@mui/icons-material/Add';
 
 const formSchema = z.object({
     company_name: z.string().min(1),
@@ -71,12 +72,15 @@ const AddCompanyForm = () => {
 
 
     return (
-        <div className='w-full flexEnd border-b border-gray-400'>
+        <div className='w-full flexEnd '>
             {isSignedIn
                 &&
                 <Sheet>
                     <SheetTrigger asChild>
-                        <Button variant='link' className='hover:cursor-pointer '>Add Company</Button>
+                        <Button variant='outline' className='bg-white text-black mr-4 hover:bg-accent hover:cursor-pointer'>
+                            <AddIcon/>
+                            <p>企業追加</p>
+                        </Button>
                     </SheetTrigger>
                     <SheetContent>
                         <SheetHeader>

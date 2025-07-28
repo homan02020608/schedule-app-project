@@ -9,7 +9,7 @@ const EntriedCompanyCard = ({ company_id, company_name, created_at, deadline, de
     //const [companyListData, setCompanyListData] = useState<CompanyList[]>();
 
     return (
-        <div className='flexCenter flex-row p-4 m-4 border gap-10 border-gray-300 shadow-xl rounded-xl  '>
+        <div className='flexCenter flex-row p-4 m-4 border gap-10 border-gray-300 shadow-xl rounded-xl '>
             <div className='flexCenter flex-col gap-4 '>
                 <Link href={`/company/${company_id}`} className='flexCenter whitespace-nowrap rounded-2xl hover:scale-105 hover:transition-transform hover:cursor-pointer'>{company_name}</Link>
                 <p className='text-sm font-light text-wrap'>#{details}</p>

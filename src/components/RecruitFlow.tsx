@@ -23,7 +23,7 @@ const RecruitFlow = async ({ companyId, userId }: { companyId: string; userId: s
     }))
     
     return (
-        <div className='flexCenter flex-col  m-4 p-4'>
+        <div className='flexCenter flex-col m-2 p-2 gap-6  '>
             <div className='flexBetween w-full'>
                 <BackButton />
                 <AddRecruitFlowButton
@@ -33,7 +33,7 @@ const RecruitFlow = async ({ companyId, userId }: { companyId: string; userId: s
             </div>
 
             <h1 className='font-light text-3xl p-2 m-4 '>選考フロー</h1>
-            <div className='flexCenter flex-col md:flex-row gap-12 '>
+            <div className='flexCenter flex-col md:flex-row gap-12 p-4 '>
                 {recruitFlowData.map((data: RecruitFlow) => (
                     <div key={data.id} className='flexCenter flex-col relative p-2'>
                         <CheckCircleOutlineOutlinedIcon
@@ -43,8 +43,6 @@ const RecruitFlow = async ({ companyId, userId }: { companyId: string; userId: s
                     </div>
                 ))}
             </div>
-
-
         </div>
     )
 }
