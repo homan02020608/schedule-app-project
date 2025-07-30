@@ -72,7 +72,7 @@ const AddCompanyForm = () => {
 
 
     return (
-        <div className='w-full flexEnd '>
+        <div className='w-full flexEnd'>
             {isSignedIn
                 &&
                 <Sheet>

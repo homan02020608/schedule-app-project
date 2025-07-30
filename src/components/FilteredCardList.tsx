@@ -16,7 +16,7 @@ const FilteredCardList = ({ companyData, currentStatus }: CompanyDataProps) => {
     })
 
     return (
-        <div>
+        <div className='h-[50vh] overflow-scroll '>
             {filteredCompanies.map((company) => (
                 <div key={company.id}>
                     <EntriedCompanyCard

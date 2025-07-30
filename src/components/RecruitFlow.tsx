@@ -40,6 +40,7 @@ const RecruitFlow = async ({ companyId, userId }: { companyId: string; userId: s
                             className={twMerge(`w-4 h-4  text-black`, (data.result === "true" && 'text-teal-500'))}
                         />
                         <div className=''>{data.recruit_selection}</div>
+                        
                     </div>
                 ))}
             </div>

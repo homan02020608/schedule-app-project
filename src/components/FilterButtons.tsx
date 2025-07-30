@@ -19,7 +19,7 @@ const FilterButtons = (props: { currentStatus: string }) => {
 
 
     return (
-        <div className='flex gap-10'>
+        <div className='flexCenter gap-10'>
             <AnimationHover>
                 <Button
                     variant="ghost"
