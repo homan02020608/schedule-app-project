@@ -13,7 +13,7 @@ const EntriedCompanyList = async (props: { currentStatus: string }) => {
     const currentStatus  = props.currentStatus ;
 
     return (
-        <div className='flexCenter flex-col p-2 border rounded-xl shadow-sm '>
+        <div className='flexCenter flex-col p-4 border-y-2 rounded-xl max-w-3xl w-full shadow-sm '>
             <h1 className='font-light text-xl my-4'>企業一覧</h1>
             <FilterButtons currentStatus={currentStatus}/>
             <div>
