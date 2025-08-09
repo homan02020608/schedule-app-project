@@ -13,7 +13,7 @@ export interface CompanyList {
 export interface CompanyCard {
     company_id?: string
     company_name?: string
-    created_at?: Date
+    created_at?: Date | Timestamp
     id?: string
     deadline?: Date
     details?:string
@@ -44,4 +44,15 @@ export interface AddCompanyFormData {
     details : string
     occupation : string
     status : string
+}
+
+export interface BarChartCompanyData {
+    id : string;
+    created_at : {
+        toDate : () => Date
+    }
+}
+export interface ChartData {
+    month: string;
+    applicatons: number;
 }

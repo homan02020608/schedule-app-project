@@ -1,5 +1,4 @@
 "use client"
-
 import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
 
@@ -17,40 +16,48 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { ChartData } from "@/app/Types"
+
 
 export const description = "A bar chart with a label"
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", applicatons: 186 },
+  { month: "February", applicatons: 305 },
+  { month: "March", applicatons: 237 },
+  { month: "April", applicatons: 73 },
+  { month: "May", applicatons: 209 },
+  { month: "June", applicatons: 214 },
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-4)",
+  applicatons: {
+    label: "applicatons",
+    color: "var(--chart-6)",
   },
 } satisfies ChartConfig
 
-export function BarChartComponent() {
+interface barChartDataProps {
+  barChartData : ChartData[]
+}
+
+export function BarChartComponent({ barChartData }: barChartDataProps) {
+  
   return (
-    <Card>
+    <Card >
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>エントリーグラフ</CardTitle>
+        <CardDescription>六ヶ月以内</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
+      <CardContent >
+        <ChartContainer config={chartConfig} className="p-4">
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={barChartData}
             margin={{
-              top:10,
+              top: 30,
             }}
+            className=""
           >
             <CartesianGrid vertical={false} />
             <XAxis
@@ -62,13 +69,13 @@ export function BarChartComponent() {
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent  />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+            <Bar dataKey="applicatons" fill="var(--color-desktop)" radius={12}>
               <LabelList
                 position="top"
                 offset={12}
-                className="fill-foreground"
+                className="fill-foreground "
                 fontSize={12}
               />
             </Bar>
@@ -76,12 +83,12 @@ export function BarChartComponent() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
+{/*         <div className="flex gap-2 leading-none font-medium">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
           Showing total visitors for the last 6 months
-        </div>
+        </div> */}
       </CardFooter>
     </Card>
   )
