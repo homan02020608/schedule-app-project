@@ -28,7 +28,7 @@ export const CreateBarChartData = async () => {
             id: doc.id,
             created_at : doc.data().created_at
         }))
-        console.log(`Fetched ${companies.length} companies for chart`);
+        //console.log(`Fetched ${companies.length} companies for chart`);
 
     } catch (error) {
         console.error("Error fetching companies from Firebase for chart:", error);

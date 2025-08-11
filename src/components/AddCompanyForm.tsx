@@ -42,6 +42,9 @@ import { useAppSelector } from '@/redux/store'
 import { addCompanyFormData } from '../../firebase/firebaseFunction'
 import { useUser } from '@clerk/nextjs'
 import AddIcon from '@mui/icons-material/Add';
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+
 
 const formSchema = z.object({
     company_name: z.string().min(1),
@@ -53,6 +56,7 @@ const formSchema = z.object({
 
 const AddCompanyForm = () => {
     const user = useAppSelector((state) => state.user.user)
+    const router = useRouter()
     const { isSignedIn } = useUser();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -67,7 +71,14 @@ const AddCompanyForm = () => {
         const { company_name, deadline, details, occupation, status } = values
         const userId = user?.id
         addCompanyFormData({ userId, company_name, deadline, details, occupation, status })
-        window.location.reload()
+        toast("追加しました!", {
+            description : 'エントリー企業追加しました。企業一覧をご覧ください。',
+            style : {
+                color : "black"
+            }
+        })
+        router.refresh()
+        //window.location.reload()
     }
 
 
